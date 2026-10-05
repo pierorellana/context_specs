@@ -15,7 +15,7 @@
 | SPEC-010 | Tarjetas, gestión y creación de tarjeta virtual | RF-10, RN-12, RN-18 | `SPEC-010-cards.md` | Implementado; smoke biométrico pendiente |
 | SPEC-011 | Financial Insights | RF-11, RN-13 | `SPEC-011-financial-insights.md` | Implementado |
 | SPEC-012 | Conversor de monedas | RF-12, RN-07 | `SPEC-012-exchange-rates.md` | Demo implementada; FX real pendiente |
-| SPEC-013 | Notificaciones y deep links | RF-13, RF-14, RN-14 | `SPEC-013-notifications.md` | Inbox implementado; FCM pendiente |
+| SPEC-013 | Notificaciones y deep links | RF-13, RF-14, RN-14 | `SPEC-013-notifications.md` | Android FCM implementado; validación manual pendiente |
 | SPEC-014 | Perfil, seguridad y preferencias | RF-15, RN-03, RN-04 | `SPEC-014-profile-security.md` | Implementado |
 | SPEC-015 | Conectividad degradada y estados | RF-16, RF-20, RN-06, RN-07, RN-08, RN-09 | `SPEC-015-degraded-connectivity.md` | Implementado en debug/demo |
 | SPEC-016 | Observabilidad y experiencia | RF-18, RNF-12 | `SPEC-016-observability.md` | API y logs móviles sanitizados implementados; telemetría externa pendiente |

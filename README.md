@@ -18,8 +18,8 @@ después se implementan Flutter y NestJS y se conserva evidencia verificable.
 6. `contracts/openapi.yaml` y las migraciones Prisma del API como contratos ejecutables.
 
 El modelo ORM se mantiene en `database/prisma/schema.prisma` y debe permanecer alineado
-con las migraciones SQL. Firebase/FCM se configura por ambiente en la fase de integración
-push; sus credenciales no forman parte de este paquete documental.
+con las migraciones SQL. Firebase/FCM Android se configura por ambiente en los repositorios
+de aplicación; sus credenciales privadas no forman parte de este paquete documental.
 
 Si dos fuentes chocan, no se corrige silenciosamente: se registra la decisión en ADR o en
 `decisions/open-findings.md`.
@@ -41,12 +41,12 @@ Spec -> diseño técnico -> implementación -> pruebas -> evidencia -> actualiza
   operaciones, insights, FX demo, notificaciones y preferencias.
 - App con Clean Architecture + Provider, UI alineada al prototipo, caché,
   estados degradados, biometría local y Developer Tools.
-- Tests actuales: 8 Flutter y 8 API aprobados; build NestJS aprobado.
+- Tests actuales: Flutter y API cubren contrato/logging/push; análisis Flutter y build NestJS aprobados.
 - Evidencia visual local disponible en `evidence/ui-validation/`.
 
 ## Pendientes de entrega
 
-- Configuración real de Firebase/FCM y validación del deep link push.
+- Validación manual de Firebase/FCM Android y deep link push en dispositivo/emulador.
 - E2E automatizado crítico y smoke financiero reproducible.
 - CI para análisis, tests, contrato OpenAPI, migraciones y secret scan.
 - Build release/demo y checklist final de entrega.

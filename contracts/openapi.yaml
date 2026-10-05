@@ -506,6 +506,20 @@ paths:
           content: { application/json: { schema: { $ref: '#/components/schemas/NotificationsEnvelope' } } }
         '401': { $ref: '#/components/responses/Unauthorized' }
         default: { $ref: '#/components/responses/UnexpectedError' }
+  /notifications/test:
+    post:
+      tags: [Notifications]
+      operationId: createNotificationTest
+      description: Ruta protegida de desarrollo. Solo existe cuando PUSH_TEST_ENDPOINT_ENABLED=true en el API.
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: '#/components/parameters/CorrelationId' }]
+      responses:
+        '202':
+          description: Notificación de prueba creada y envío push intentado
+          content: { application/json: { schema: { $ref: '#/components/schemas/NotificationEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
   /notifications/{id}/read:
     post:
       tags: [Notifications]

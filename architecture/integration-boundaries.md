@@ -17,5 +17,7 @@
 - FCM para token/push.
 - Crashlytics/Analytics/Performance por configuración de ambiente.
 - Payload de push contiene tipo y resourceId; nunca saldo ni PII sensible.
-- Estado actual: frontera documentada y contrato de dispositivos/inbox implementado;
-  SDK, credenciales, recepción push y deep links reales quedan pendientes.
+- Estado actual: Firebase Messaging/Admin y el contrato de dispositivos/inbox están
+  implementados para Android. Las credenciales privadas permanecen únicamente en el API
+  por ambiente; la validación manual de entrega y deep link requiere un dispositivo o
+  emulador con Google Play Services y conectividad hacia el API.

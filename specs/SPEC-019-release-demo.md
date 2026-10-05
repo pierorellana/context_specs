@@ -37,8 +37,9 @@ Si el panel está deshabilitado, la app opera contra condiciones reales.
 
 Developer Tools funciona en debug/demo con normal, slow, offline, server error y
 timeout. El seed demo y la ejecución local están documentados. Falta publicar el
-workflow CI y generar/validar el build release/demo final; Firebase permanece como
-dependencia externa.
+workflow CI y generar/validar el build release/demo final. Firebase/FCM Android está
+integrado en los repositorios; falta la validación manual y la configuración por ambiente
+desplegado.
 
 ## 7. Fuera de alcance
 Capacidades productivas no requeridas por el MVP y reglas no declaradas en el DEF.

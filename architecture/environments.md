@@ -21,6 +21,9 @@ Variables exclusivas del backend FX: `FX_PROVIDER_BASE_URL`, `FX_PROVIDER_NAME`,
 `FX_STALE_MAX_AGE_SECONDS`. La configuración sigue ADR-016 y los secretos nunca se
 versionan ni se envían al mobile.
 
-Firebase/FCM todavía no está configurado porque faltan los archivos y credenciales de
-cada ambiente. Los endpoints de dispositivos y el contrato de notificaciones están
-implementados y pueden probarse con fixtures.
+Firebase/FCM Android está configurado en el proyecto local: Flutter usa el archivo público
+android/app/google-services.json y el API usa FIREBASE_SERVICE_ACCOUNT_PATH,
+PUSH_ENABLED y PUSH_TEST_ENDPOINT_ENABLED. La cuenta de servicio se mantiene fuera
+del repositorio. Falta configurar el secreto equivalente en cada ambiente desplegado y
+validar foreground/background/terminated con un dispositivo o emulador con Google Play
+Services y conectividad hacia el API.

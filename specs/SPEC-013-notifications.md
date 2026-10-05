@@ -28,8 +28,12 @@ Payload push: type, notificationId, resourceType, resourceId.
 Router valida destino permitido.
 
 El proveedor de push es Firebase Cloud Messaging. La configuración de credenciales y
-archivos nativos se incorpora en la fase final; el contrato API y fixtures no dependen
-de que Firebase esté configurado localmente.
+archivos nativos está implementada para Android. POST /v1/notifications/test es una
+ruta protegida de desarrollo, habilitada únicamente con PUSH_TEST_ENDPOINT_ENABLED=true.
+El contrato API y las pruebas unitarias no dependen de que Firebase esté habilitado.
+La app muestra mensajes en primer plano mediante notificación local; en segundo plano y
+terminada, Android usa la bandeja FCM y resuelve taps mediante onMessageOpenedApp o
+getInitialMessage.
 
 ## 4. Errores y estados
 Token inválido se renueva. Deep link desconocido abre Home + aviso no bloqueante.
@@ -41,10 +45,11 @@ Token inválido se renueva. Deep link desconocido abre Home + aviso no bloqueant
 
 ## 6. Estado actual
 
-El API expone registro/revocación de dispositivos e inbox de notificaciones y la app
-renderiza el centro de notificaciones. La integración Firebase/FCM, permisos nativos,
-recepción en dispositivo y deep link real están pendientes de credenciales y archivos
-por ambiente.
+El API expone registro/revocación de dispositivos, inbox y envío Firebase Admin. La app
+renderiza el centro de notificaciones, registra tokens Android y navega desde push con
+allowlist. La validación manual en un dispositivo/emulador con Firebase, el acceso de red
+al API y la configuración de secretos por ambiente aún son evidencia pendiente. iOS queda
+fuera del alcance de esta iteración.
 
 ## 7. Fuera de alcance
 Capacidades productivas no requeridas por el MVP y reglas no declaradas en el DEF.

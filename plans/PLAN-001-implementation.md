@@ -27,17 +27,17 @@ convencionales pequeños.
 - Observabilidad backend estructurada: implementada.
 - Developer Tools para normal/slow/offline/server error/timeout: implementado en debug
   y demo.
-- Tests unitarios/widget y backend: implementados; 8 Flutter y 8 API aprobados.
+- Tests unitarios/widget y backend: implementados; validación push y contrato ejecutada.
 - Evidencia visual en emulador Android: disponible.
 - E2E automatizado y smoke financiero: instrucciones y flujo manual definidos, falta
   automatización reproducible.
 - CI con análisis, tests, contrato, migraciones y secret scan: pendiente.
 - Build release/demo: pendiente de generar como artefacto final.
-- Firebase/FCM y deep links reales: pendiente de credenciales y archivos nativos.
+- Firebase/FCM Android y deep links implementados; pendiente validación manual con dispositivo/emulador y configuración de secretos desplegados.
 
 ## Próximo orden
 
-1. Incorporar los archivos de Firebase/FCM y validar registro, push y deep link.
+1. Validar registro, push foreground/background/terminated y deep link en Android.
 2. Automatizar el E2E crítico y el smoke financiero en el emulador.
 3. Crear workflows de CI para App, API y validaciones documentales.
 4. Ejecutar migraciones desde PostgreSQL limpio, validar OpenAPI y hacer secret scan.

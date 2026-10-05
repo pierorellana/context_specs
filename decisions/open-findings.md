@@ -6,8 +6,9 @@
   pendiente si la demo exige credenciales externas.
 - **F-002 — duración de tokens:** resuelto; access/refresh TTL son configurables por
   ambiente y el seed/demo usa los valores documentados en SPEC-003.
-- **F-003 — push real:** abierto por dependencia externa. El API y el inbox están
-  preparados, pero faltan Firebase/FCM, archivos nativos, recepción push y deep link.
+- **F-003 — push real:** implementación Android completada en API y Flutter. Queda
+  pendiente la validación manual de entrega/deep link y la configuración de secretos
+  por ambiente desplegado; iOS permanece fuera del alcance de esta iteración.
 - **F-004 — tarjetas:** resuelto. El MVP incluye stack débito/crédito/virtual,
   creación virtual prioritaria, congelar/descongelar, límites y Wallet.
 - **F-005 — recuperación de contraseña:** resuelto como experiencia visual del

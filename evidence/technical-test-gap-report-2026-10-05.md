@@ -11,7 +11,7 @@ Los PDFs se usan como requisitos de evaluación. No se interpretan como instrucc
 | Cuentas, saldos y movimientos | Implementado | API y features de cuentas/transacciones están presentes, con caché y movimientos paginados. |
 | Personalización dinámica | Implementado | Dashboard server-driven con catálogo acotado y configuración versionada. |
 | Integración con un servicio externo relevante | Parcial | Existe adapter FX real configurable y adapter demo; falta demostrar una llamada real con `FX_PROVIDER_BASE_URL` configurado y evidencia de esa ejecución. |
-| Notificaciones push | Parcial | Inbox, registro de dispositivos y contratos existen; faltan SDK/credenciales FCM, recepción push real y deep link validado en dispositivo. |
+| Notificaciones push | Implementado parcialmente | API con Firebase Admin, registro Android, FCM foreground/background/terminated y allowlist de deep links están implementados; falta validación manual en dispositivo/emulador, conectividad API desde el equipo y secreto por ambiente desplegado. |
 | Monitoreo de producción y problemas de UX | Parcial | Logs estructurados, correlación, latencia y estados de UX existen; faltan Crashlytics/Sentry, métricas persistidas, dashboards y alertas operativas. |
 | Conectividad limitada, latencia e indisponibilidad parcial | Implementado en demo | Developer Tools simula normal, slow, offline, 500 y timeout; hay caché, skeleton, stale/retry y degradación parcial documentada. Falta evidencia E2E del flujo de recuperación en dispositivo. |
 | Pruebas unitarias | Implementado parcialmente | Hay tests unitarios de servicios, contratos, auth, red y envelope; falta ampliar cobertura a todos los casos críticos de negocio. |
@@ -29,7 +29,6 @@ Los PDFs se usan como requisitos de evaluación. No se interpretan como instrucc
 
 1. Añadir el E2E crítico con `integration_test` y generar evidencia.
 2. Ejecutar y documentar una llamada real al proveedor FX.
-3. Completar FCM/deep links o declarar explícitamente la demo de inbox como alcance acotado.
+3. Ejecutar la validación manual FCM/deep link en Android y conservar evidencia de foreground, background y app terminada.
 4. Añadir CI con análisis, tests, build, validación OpenAPI, migraciones desde cero y secret scan.
 5. Consolidar ADRs/diagramas y un runbook de despliegue/rollback.
-
