@@ -35,8 +35,15 @@ Una dependencia externa en CI puede usar adapter fake; la demo conserva integrac
 - E2E tiene instrucciones reproducibles.
 - Evidencia incluye comandos, resultado y fecha.
 
-## 6. Fuera de alcance
+## 6. Estado actual
+
+Hay 8 tests Flutter aprobados y 8 tests API aprobados; el API también compila. La
+validación visual se ejecutó en el emulador Android y está almacenada en
+`evidence/ui-validation/`. Aún faltan `integration_test/`, contract testing OpenAPI,
+PostgreSQL efímero en CI y automatización de los dos recorridos críticos.
+
+## 7. Fuera de alcance
 Capacidades productivas no requeridas por el MVP y reglas no declaradas en el DEF.
 
-## 7. Decisiones pendientes
-Ninguna para v2.0 salvo las registradas en `context/decisions/open-findings.md`.
+## 8. Decisiones pendientes
+Ninguna para v2.0 salvo las registradas en `decisions/open-findings.md`.

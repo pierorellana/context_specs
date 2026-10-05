@@ -15,7 +15,7 @@ npm start
 Resultados:
 
 - `binova-postgres` ejecutándose en `localhost:5432`.
-- Migraciones Prisma `0001` a `0004` aplicadas; esquema actualizado.
+- Migraciones Prisma `0001_init` a `0004_cards` aplicadas; esquema actualizado.
 - Seed demo aplicado.
 - `GET /v1/health` respondió `{"status":"ok"}`.
 - Login demo respondió con sesión completa.
@@ -37,7 +37,7 @@ cd android
 
 Resultados:
 
-- Análisis sin issues.
+- Análisis sin errores; quedaron únicamente avisos informativos de estilo del analyzer.
 - 8 tests Flutter pasando.
 - APK debug compilado correctamente.
 - Developer Tools disponible en debug/demo para normal, slow, offline, server
@@ -52,8 +52,18 @@ Resultados:
 - No se observaron excepciones `FATAL EXCEPTION`, `E/flutter` ni errores no
   controlados en el logcat del paquete.
 
+## Validación de repositorios
+
+- App: commits `8f270f4`, `2536f60` y `f802e0c` publicados en `binova_app`.
+- API: commits `98dd2d4` y `7914694` publicados en `api_binova`.
+- Context: commit `5712895` publicado en `context_specs`.
+- Los tres `main` quedaron sin cambios locales pendientes al cierre de esta evidencia.
+
 ## Pendiente externo
 
 La validación de push real y Firebase/FCM queda pendiente de las credenciales
 del ambiente; los endpoints de dispositivos y notificaciones ya están
 disponibles para fixtures.
+
+También quedan pendientes la automatización E2E/CI, validación OpenAPI en pipeline y
+el build release/demo como artefacto final.

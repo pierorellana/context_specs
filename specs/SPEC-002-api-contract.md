@@ -37,14 +37,22 @@ provisión a Apple Wallet.
 401 renueva sesión una vez; 409 idempotency conflict; 429 rate limit; 503 dependencia no disponible.
 
 ## 5. Criterios de aceptación / Done
-- OpenAPI valida en CI.
+- OpenAPI es el contrato publicado en `contracts/openapi.yaml`; la validación automática
+  en CI queda pendiente de incorporar al workflow.
 - Mobile puede implementar todos los repositorios sin inferir campos.
 - Errores se resuelven por `code`.
 - Todas las respuestas exitosas del contrato tienen `data` y `meta`, incluidos los
   cambios de preferencias, lectura de notificaciones y acciones de dispositivos.
 
-## 6. Fuera de alcance
+## 6. Estado actual
+
+El API implementa salud, autenticación/refresh, dashboard, cuentas, movimientos,
+operaciones, tarjetas, insights, FX, notificaciones, dispositivos y perfil. El contrato
+está versionado y la validación runtime se cubre con tests de servicio; falta añadir
+lint/contract testing OpenAPI al CI.
+
+## 7. Fuera de alcance
 Capacidades productivas no requeridas por el MVP y reglas no declaradas en el DEF.
 
-## 7. Decisiones pendientes
-Ninguna para v2.0 salvo las registradas en `context/decisions/open-findings.md`.
+## 8. Decisiones pendientes
+Ninguna para v2.0 salvo las registradas en `decisions/open-findings.md`.

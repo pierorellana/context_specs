@@ -1,6 +1,6 @@
 # BInova - reglas para agentes/IA
 
-- Leer primero `context/def/DEF-BInova.md`, la SPEC afectada y sus ADRs.
+- Leer primero `def/DEF-BInova.md`, la SPEC afectada y sus ADRs.
 - No inventar reglas bancarias fuera de las SPEC.
 - No colocar lógica de negocio dentro de widgets o ChangeNotifier.
 - Flutter consume contratos; NestJS conserva autoridad sobre sesión, reglas y orquestación.

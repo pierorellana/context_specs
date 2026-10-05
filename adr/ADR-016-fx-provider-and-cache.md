@@ -36,6 +36,7 @@ el contrato BInova.
 
 ## Verificación
 
-CI utilizará un adapter fake determinista. El smoke de demo ejecutará una llamada
-real con el proveedor configurado en el ambiente, con timeout, fallback y métricas de
-latencia observables.
+El API actual usa el adapter demo determinista cuando `FX_PROVIDER_BASE_URL` está vacío
+y conserva la ruta para un adapter HTTP real con timeout, fallback y métricas. CI aún
+debe formalizar el fake determinista; el smoke con proveedor externo real queda sujeto
+a credenciales y configuración del ambiente demo.

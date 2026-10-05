@@ -39,8 +39,15 @@ Token inválido se renueva. Deep link desconocido abre Home + aviso no bloqueant
 - Tocar una notificación abre el contexto correcto.
 - Lectura se sincroniza idempotentemente.
 
-## 6. Fuera de alcance
+## 6. Estado actual
+
+El API expone registro/revocación de dispositivos e inbox de notificaciones y la app
+renderiza el centro de notificaciones. La integración Firebase/FCM, permisos nativos,
+recepción en dispositivo y deep link real están pendientes de credenciales y archivos
+por ambiente.
+
+## 7. Fuera de alcance
 Capacidades productivas no requeridas por el MVP y reglas no declaradas en el DEF.
 
-## 7. Decisiones pendientes
-Ninguna para v2.0 salvo las registradas en `context/decisions/open-findings.md`.
+## 8. Decisiones pendientes
+Ninguna para v2.0 salvo las registradas en `decisions/open-findings.md`.

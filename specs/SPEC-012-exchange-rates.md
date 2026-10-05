@@ -48,14 +48,20 @@ reintenta indefinidamente ni se bloquean cuentas, movimientos u operaciones inte
 ## 5. Criterios de aceptación / Done
 - No hay API key en Flutter.
 - Se puede reemplazar proveedor sin modificar mobile.
-- Demo muestra al menos una llamada real.
-- CI usa un adapter fake determinista; el smoke de demo usa el proveedor configurado.
+- Demo local muestra una llamada mediante el adapter demo determinista.
+- CI debe usar un adapter fake determinista; el smoke demo con proveedor externo real
+  queda pendiente de configuración.
 - Las credenciales provienen de variables/secret manager por ambiente y no se versionan.
 
-## 6. Fuera de alcance
+## 6. Estado actual
+
+La app y el API consumen el contrato de tasas; el ambiente local usa el adapter demo.
+No se han configurado credenciales de un proveedor externo en este workspace.
+
+## 7. Fuera de alcance
 Capacidades productivas no requeridas por el MVP y reglas no declaradas en el DEF.
 
-## 7. Decisiones pendientes
+## 8. Decisiones pendientes
 La estrategia de adapter, credenciales, timeout y cache queda resuelta en
 `ADR-016-fx-provider-and-cache.md`. Solo queda configurar el proveedor concreto y sus
 credenciales en el ambiente demo antes del smoke real.

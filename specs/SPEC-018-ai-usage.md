@@ -35,4 +35,4 @@ Salida de IA no validada no se considera evidencia.
 Capacidades productivas no requeridas por el MVP y reglas no declaradas en el DEF.
 
 ## 7. Decisiones pendientes
-Ninguna para v2.0 salvo las registradas en `context/decisions/open-findings.md`.
+Ninguna para v2.0 salvo las registradas en `decisions/open-findings.md`.

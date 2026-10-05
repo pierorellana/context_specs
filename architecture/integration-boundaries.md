@@ -17,3 +17,5 @@
 - FCM para token/push.
 - Crashlytics/Analytics/Performance por configuración de ambiente.
 - Payload de push contiene tipo y resourceId; nunca saldo ni PII sensible.
+- Estado actual: frontera documentada y contrato de dispositivos/inbox implementado;
+  SDK, credenciales, recepción push y deep links reales quedan pendientes.

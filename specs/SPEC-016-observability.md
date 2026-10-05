@@ -33,8 +33,14 @@ Si telemetría falla, nunca bloquea una operación bancaria.
 - Correlation id permite enlazar una llamada mobile con backend.
 - Hay una lista de métricas y alertas recomendadas.
 
-## 6. Fuera de alcance
+## 6. Estado actual
+
+La observabilidad estructurada del API está implementada y redacta headers, bodies,
+saldos, tokens y credenciales. La telemetría Firebase/Sentry y dashboards no están
+configurados todavía.
+
+## 7. Fuera de alcance
 Capacidades productivas no requeridas por el MVP y reglas no declaradas en el DEF.
 
-## 7. Decisiones pendientes
-Ninguna para v2.0 salvo las registradas en `context/decisions/open-findings.md`.
+## 8. Decisiones pendientes
+Ninguna para v2.0 salvo las registradas en `decisions/open-findings.md`.

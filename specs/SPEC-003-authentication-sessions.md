@@ -40,4 +40,4 @@ Recuperación de contraseña a nivel API, persistencia de solicitudes de recuper
 envío de correo/SMS y reglas de bloqueo derivadas de ese flujo.
 
 ## 7. Decisiones pendientes
-Ninguna para v2.0 salvo las registradas en `context/decisions/open-findings.md`.
+Ninguna para v2.0 salvo las registradas en `decisions/open-findings.md`.

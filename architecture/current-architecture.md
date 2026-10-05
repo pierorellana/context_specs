@@ -1,4 +1,4 @@
-# Arquitectura objetivo BInova
+# Arquitectura actual BInova
 
 ## Mobile
 
@@ -25,15 +25,14 @@ lib/
     dashboard/
     accounts/
     transactions/
-    beneficiaries/
-    transfers/
-    payments/
     cards/
+    home/
+    operations/
     insights/
     exchange/
     notifications/
     profile/
-    degraded_states/
+    developer_tools/
 ```
 
 Cada feature mantiene `data/`, `domain/` y `presentation/`.
@@ -51,15 +50,12 @@ repositorios y mapea DTO/cache hacia entidades.
 src/
   modules/
     auth/
-    users/
     profile/
     dashboard/
     accounts/
     transactions/
-    beneficiaries/
-    transfers/
-    payments/
     cards/
+    operations/
     insights/
     exchange/
     notifications/
@@ -70,10 +66,8 @@ src/
     interceptors/
     errors/
     observability/
-  infrastructure/
-    database/
-    external-services/
-    cache/
+  prisma/
+  config/
 ```
 
 NestJS expone REST versionado `/v1`. PostgreSQL + Prisma es la persistencia del MVP.
