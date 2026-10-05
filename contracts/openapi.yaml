@@ -1,0 +1,1063 @@
+openapi: 3.0.3
+info:
+  title: BInova API
+  version: 1.0.0
+  description: >-
+    Contrato REST versionado para la aplicación móvil BInova. Los endpoints
+    exponen envelopes estables y errores resolubles por código.
+servers:
+  - url: https://api.demo.binova.local/v1
+    description: Demo
+tags:
+  - name: Auth
+  - name: Profile
+  - name: Dashboard
+  - name: Accounts
+  - name: Transactions
+  - name: Beneficiaries
+  - name: Operations
+  - name: Cards
+  - name: Insights
+  - name: Exchange
+  - name: Notifications
+  - name: Devices
+paths:
+  /auth/login:
+    post:
+      tags: [Auth]
+      operationId: login
+      parameters: [{ $ref: '#/components/parameters/CorrelationId' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/LoginRequest' } } }
+      responses:
+        '200':
+          description: Sesión creada
+          content: { application/json: { schema: { $ref: '#/components/schemas/SessionEnvelope' } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /auth/refresh:
+    post:
+      tags: [Auth]
+      operationId: refreshSession
+      parameters: [{ $ref: '#/components/parameters/CorrelationId' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/RefreshRequest' } } }
+      responses:
+        '200':
+          description: Sesión rotada
+          content: { application/json: { schema: { $ref: '#/components/schemas/SessionEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /auth/logout:
+    post:
+      tags: [Auth]
+      operationId: logout
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: '#/components/parameters/CorrelationId' }]
+      responses:
+        '200':
+          description: Sesión revocada
+          content: { application/json: { schema: { $ref: '#/components/schemas/LogoutEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+
+  /profile:
+    get:
+      tags: [Profile]
+      operationId: getProfile
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: '#/components/parameters/CorrelationId' }]
+      responses:
+        '200':
+          description: Perfil
+          content: { application/json: { schema: { $ref: '#/components/schemas/ProfileEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /profile/preferences:
+    get:
+      tags: [Profile]
+      operationId: getPreferences
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: '#/components/parameters/CorrelationId' }]
+      responses:
+        '200':
+          description: Preferencias
+          content: { application/json: { schema: { $ref: '#/components/schemas/PreferencesEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+    patch:
+      tags: [Profile]
+      operationId: updatePreferences
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: '#/components/parameters/CorrelationId' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/UpdatePreferencesRequest' } } }
+      responses:
+        '200':
+          description: Preferencias actualizadas
+          content: { application/json: { schema: { $ref: '#/components/schemas/PreferencesEnvelope' } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+
+  /dashboard:
+    get:
+      tags: [Dashboard]
+      operationId: getDashboard
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: '#/components/parameters/CorrelationId' }]
+      responses:
+        '200':
+          description: Configuración Home server-driven
+          content: { application/json: { schema: { $ref: '#/components/schemas/DashboardEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+
+  /accounts:
+    get:
+      tags: [Accounts]
+      operationId: listAccounts
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: '#/components/parameters/CorrelationId' }]
+      responses:
+        '200':
+          description: Cuentas y productos
+          content: { application/json: { schema: { $ref: '#/components/schemas/AccountsEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /accounts/{id}:
+    get:
+      tags: [Accounts]
+      operationId: getAccount
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/ResourceId' }
+      responses:
+        '200':
+          description: Detalle de cuenta
+          content: { application/json: { schema: { $ref: '#/components/schemas/AccountEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /accounts/{id}/transactions:
+    get:
+      tags: [Transactions]
+      operationId: listAccountTransactions
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/ResourceId' }
+        - { $ref: '#/components/parameters/Cursor' }
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 50, default: 20 }
+        - in: query
+          name: period
+          schema: { type: string, enum: [week, month, year, custom] }
+        - in: query
+          name: category
+          schema: { type: string, maxLength: 50 }
+        - in: query
+          name: from
+          schema: { type: string, format: date }
+        - in: query
+          name: to
+          schema: { type: string, format: date }
+      responses:
+        '200':
+          description: Movimientos paginados
+          content: { application/json: { schema: { $ref: '#/components/schemas/TransactionsEnvelope' } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /transactions/{id}:
+    get:
+      tags: [Transactions]
+      operationId: getTransaction
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/ResourceId' }
+      responses:
+        '200':
+          description: Detalle de movimiento
+          content: { application/json: { schema: { $ref: '#/components/schemas/TransactionEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+
+  /beneficiaries:
+    get:
+      tags: [Beneficiaries]
+      operationId: listBeneficiaries
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: '#/components/parameters/CorrelationId' }]
+      responses:
+        '200':
+          description: Beneficiarios de transferencia
+          content: { application/json: { schema: { $ref: '#/components/schemas/BeneficiariesEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+
+  /transfers:
+    post:
+      tags: [Operations]
+      operationId: createTransfer
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/CreateTransferRequest' } } }
+      responses:
+        '202':
+          description: Transferencia aceptada
+          content: { application/json: { schema: { $ref: '#/components/schemas/OperationEnvelope' } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '422': { $ref: '#/components/responses/BusinessRuleError' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /payments/debt:
+    get:
+      tags: [Operations]
+      operationId: getPaymentDebt
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - in: query
+          name: providerId
+          required: true
+          schema: { type: string, minLength: 1, maxLength: 50 }
+        - in: query
+          name: accountReference
+          required: true
+          schema: { type: string, minLength: 1, maxLength: 100 }
+      responses:
+        '200':
+          description: Deuda consultada
+          content: { application/json: { schema: { $ref: '#/components/schemas/DebtEnvelope' } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /payments:
+    post:
+      tags: [Operations]
+      operationId: createPayment
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/CreatePaymentRequest' } } }
+      responses:
+        '202':
+          description: Pago aceptado
+          content: { application/json: { schema: { $ref: '#/components/schemas/OperationEnvelope' } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '422': { $ref: '#/components/responses/BusinessRuleError' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /topups:
+    post:
+      tags: [Operations]
+      operationId: createTopup
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/CreateTopupRequest' } } }
+      responses:
+        '202':
+          description: Recarga aceptada
+          content: { application/json: { schema: { $ref: '#/components/schemas/OperationEnvelope' } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '422': { $ref: '#/components/responses/BusinessRuleError' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /operations/{id}:
+    get:
+      tags: [Operations]
+      operationId: getOperation
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/ResourceId' }
+      responses:
+        '200':
+          description: Estado de operación
+          content: { application/json: { schema: { $ref: '#/components/schemas/OperationEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+
+  /cards:
+    get:
+      tags: [Cards]
+      operationId: listCards
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: '#/components/parameters/CorrelationId' }]
+      responses:
+        '200':
+          description: Tarjetas del usuario
+          content: { application/json: { schema: { $ref: '#/components/schemas/CardsEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /cards/virtual:
+    post:
+      tags: [Cards]
+      operationId: createVirtualCard
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: false
+        content: { application/json: { schema: { $ref: '#/components/schemas/CreateVirtualCardRequest' } } }
+      responses:
+        '202':
+          description: Creación virtual aceptada
+          content: { application/json: { schema: { $ref: '#/components/schemas/OperationEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '422': { $ref: '#/components/responses/BusinessRuleError' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /cards/{id}:
+    get:
+      tags: [Cards]
+      operationId: getCard
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/ResourceId' }
+      responses:
+        '200':
+          description: Detalle de tarjeta
+          content: { application/json: { schema: { $ref: '#/components/schemas/CardEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /cards/{id}/freeze:
+    post:
+      tags: [Cards]
+      operationId: freezeCard
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/ResourceId' }
+      responses:
+        '200':
+          description: Tarjeta congelada
+          content: { application/json: { schema: { $ref: '#/components/schemas/CardEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '422': { $ref: '#/components/responses/BusinessRuleError' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /cards/{id}/unfreeze:
+    post:
+      tags: [Cards]
+      operationId: unfreezeCard
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/ResourceId' }
+      responses:
+        '200':
+          description: Tarjeta desbloqueada
+          content: { application/json: { schema: { $ref: '#/components/schemas/CardEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '422': { $ref: '#/components/responses/BusinessRuleError' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /cards/{id}/limits:
+    get:
+      tags: [Cards]
+      operationId: getCardLimits
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/ResourceId' }
+      responses:
+        '200':
+          description: Límites de tarjeta
+          content: { application/json: { schema: { $ref: '#/components/schemas/CardLimitsEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+    patch:
+      tags: [Cards]
+      operationId: updateCardLimits
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/ResourceId' }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/UpdateCardLimitsRequest' } } }
+      responses:
+        '200':
+          description: Límites actualizados
+          content: { application/json: { schema: { $ref: '#/components/schemas/CardLimitsEnvelope' } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '422': { $ref: '#/components/responses/BusinessRuleError' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /cards/{id}/wallet-provisioning:
+    post:
+      tags: [Cards]
+      operationId: provisionCardToWallet
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+        - { $ref: '#/components/parameters/ResourceId' }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/WalletProvisioningRequest' } } }
+      responses:
+        '202':
+          description: Provisión a Wallet aceptada
+          content: { application/json: { schema: { $ref: '#/components/schemas/WalletProvisioningEnvelope' } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '422': { $ref: '#/components/responses/BusinessRuleError' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+
+  /insights/monthly:
+    get:
+      tags: [Insights]
+      operationId: getMonthlyInsights
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - in: query
+          name: period
+          schema: { type: string, enum: [week, month, year], default: month }
+      responses:
+        '200':
+          description: Insights agregados
+          content: { application/json: { schema: { $ref: '#/components/schemas/InsightsEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /exchange-rates:
+    get:
+      tags: [Exchange]
+      operationId: getExchangeRate
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - in: query
+          name: base
+          required: true
+          schema: { type: string, pattern: '^[A-Z]{3}$', default: USD }
+        - in: query
+          name: quote
+          required: true
+          schema: { type: string, pattern: '^[A-Z]{3}$', default: EUR }
+      responses:
+        '200':
+          description: Tipo de cambio, posiblemente stale
+          content: { application/json: { schema: { $ref: '#/components/schemas/ExchangeRateEnvelope' } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /notifications:
+    get:
+      tags: [Notifications]
+      operationId: listNotifications
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/Cursor' }
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 50, default: 20 }
+        - in: query
+          name: unreadOnly
+          schema: { type: boolean, default: false }
+      responses:
+        '200':
+          description: Inbox
+          content: { application/json: { schema: { $ref: '#/components/schemas/NotificationsEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /notifications/{id}/read:
+    post:
+      tags: [Notifications]
+      operationId: markNotificationRead
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/ResourceId' }
+      responses:
+        '200':
+          description: Notificación leída; operación idempotente
+          content: { application/json: { schema: { $ref: '#/components/schemas/NotificationEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /notifications/read-all:
+    post:
+      tags: [Notifications]
+      operationId: markAllNotificationsRead
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: '#/components/parameters/CorrelationId' }]
+      responses:
+        '200':
+          description: Inbox leída; operación idempotente
+          content: { application/json: { schema: { $ref: '#/components/schemas/ReadAllNotificationsEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /devices:
+    get:
+      tags: [Devices]
+      operationId: listDevices
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: '#/components/parameters/CorrelationId' }]
+      responses:
+        '200':
+          description: Dispositivos registrados
+          content: { application/json: { schema: { $ref: '#/components/schemas/DevicesEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+    post:
+      tags: [Devices]
+      operationId: registerDevice
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: '#/components/parameters/CorrelationId' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/RegisterDeviceRequest' } } }
+      responses:
+        '201':
+          description: Dispositivo registrado
+          content: { application/json: { schema: { $ref: '#/components/schemas/DeviceEnvelope' } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+  /devices/{id}:
+    delete:
+      tags: [Devices]
+      operationId: revokeDevice
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/CorrelationId' }
+        - { $ref: '#/components/parameters/ResourceId' }
+      responses:
+        '200':
+          description: Dispositivo revocado; operación idempotente
+          content: { application/json: { schema: { $ref: '#/components/schemas/RevokeDeviceEnvelope' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        default: { $ref: '#/components/responses/UnexpectedError' }
+
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+  parameters:
+    CorrelationId:
+      in: header
+      name: X-Correlation-Id
+      required: false
+      description: Trazabilidad; el API lo genera si no llega.
+      schema: { type: string, minLength: 1, maxLength: 80 }
+    IdempotencyKey:
+      in: header
+      name: Idempotency-Key
+      required: true
+      description: Una key por intención de escritura financiera.
+      schema: { type: string, minLength: 16, maxLength: 120 }
+    ResourceId:
+      in: path
+      name: id
+      required: true
+      schema: { type: string, format: uuid }
+    Cursor:
+      in: query
+      name: cursor
+      required: false
+      schema: { type: string, minLength: 1, maxLength: 200 }
+  responses:
+    BadRequest:
+      description: Solicitud inválida
+      content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } }
+    Unauthorized:
+      description: Token inválido, sesión expirada o refresh revocado
+      content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } }
+    NotFound:
+      description: Recurso no encontrado
+      content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } }
+    Conflict:
+      description: Conflicto de idempotencia o estado
+      content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } }
+    BusinessRuleError:
+      description: Regla de negocio no satisfecha
+      content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } }
+    RateLimited:
+      description: Demasiadas solicitudes
+      headers: { Retry-After: { schema: { type: integer, minimum: 1 } } }
+      content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } }
+    ServiceUnavailable:
+      description: Dependencia no disponible
+      content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } }
+    UnexpectedError:
+      description: Error inesperado
+      content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } }
+  schemas:
+    ApiMeta:
+      type: object
+      required: [traceId, generatedAt]
+      properties:
+        traceId: { type: string, minLength: 1, maxLength: 80 }
+        generatedAt: { type: string, format: date-time }
+        nextCursor: { type: string, nullable: true }
+    Money:
+      type: object
+      required: [amount, currency]
+      properties:
+        amount: { type: string, pattern: '^-?\d{1,16}(\.\d{1,2})?$' }
+        currency: { type: string, pattern: '^[A-Z]{3}$' }
+    ErrorResponse:
+      type: object
+      required: [error, traceId]
+      properties:
+        error: { $ref: '#/components/schemas/ApiError' }
+        traceId: { type: string }
+    ApiError:
+      type: object
+      required: [code, message, details]
+      properties:
+        code:
+          type: string
+          enum: [AUTH_INVALID_CREDENTIALS, SESSION_EXPIRED, REFRESH_REVOKED, ACCOUNT_NOT_FOUND, TRANSACTION_NOT_FOUND, BENEFICIARY_NOT_FOUND, OPERATION_NOT_FOUND, OPERATION_PENDING, OPERATION_REJECTED, INSUFFICIENT_FUNDS, IDEMPOTENCY_CONFLICT, FX_UNAVAILABLE, DEBT_NOT_FOUND, PROVIDER_UNAVAILABLE, CARD_NOT_ELIGIBLE, CARD_ALREADY_FROZEN, CARD_ALREADY_ACTIVE, RATE_LIMITED, VALIDATION_ERROR, NOT_FOUND, SERVICE_UNAVAILABLE]
+        message: { type: string }
+        details: { type: object, additionalProperties: true }
+    LoginRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username: { type: string, minLength: 1, maxLength: 120 }
+        password: { type: string, format: password, minLength: 1, maxLength: 200 }
+    RefreshRequest:
+      type: object
+      required: [refreshToken]
+      properties: { refreshToken: { type: string, minLength: 1 } }
+    UserProfile:
+      type: object
+      required: [id, email, displayName, segment]
+      properties:
+        id: { type: string, format: uuid }
+        email: { type: string, format: email }
+        displayName: { type: string }
+        segment: { type: string }
+    SessionData:
+      type: object
+      required: [accessToken, refreshToken, accessTokenExpiresAt, refreshTokenExpiresAt, user]
+      properties:
+        accessToken: { type: string }
+        refreshToken: { type: string }
+        accessTokenExpiresAt: { type: string, format: date-time }
+        refreshTokenExpiresAt: { type: string, format: date-time }
+        user: { $ref: '#/components/schemas/UserProfile' }
+    Preferences:
+      type: object
+      required: [hideBalance, reduceMotion, notificationsEnabled]
+      properties:
+        hideBalance: { type: boolean }
+        reduceMotion: { type: boolean }
+        notificationsEnabled: { type: boolean }
+    UpdatePreferencesRequest:
+      type: object
+      minProperties: 1
+      properties:
+        hideBalance: { type: boolean }
+        reduceMotion: { type: boolean }
+        notificationsEnabled: { type: boolean }
+    DashboardSection:
+      type: object
+      required: [id, type, order, payload]
+      properties:
+        id: { type: string }
+        type: { type: string, enum: [balance, quick_actions, products, recent_transactions, insight, exchange_promo, service_status] }
+        order: { type: integer, minimum: 0 }
+        payload: { type: object, additionalProperties: true }
+    DashboardConfig:
+      type: object
+      required: [schemaVersion, segment, sections]
+      properties:
+        schemaVersion: { type: integer, minimum: 1 }
+        segment: { type: string }
+        sections: { type: array, items: { $ref: '#/components/schemas/DashboardSection' } }
+    Account:
+      type: object
+      required: [id, type, name, maskedNumber, currency, ledgerBalance, availableBalance, status, lastUpdatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        type: { type: string, enum: [savings, current, credit] }
+        name: { type: string }
+        maskedNumber: { type: string }
+        currency: { type: string, pattern: '^[A-Z]{3}$' }
+        ledgerBalance: { $ref: '#/components/schemas/Money' }
+        availableBalance: { $ref: '#/components/schemas/Money' }
+        status: { type: string, enum: [active, blocked, closed] }
+        lastUpdatedAt: { type: string, format: date-time }
+    Transaction:
+      type: object
+      required: [id, kind, description, category, amount, status, occurredAt, reference]
+      properties:
+        id: { type: string, format: uuid }
+        kind: { type: string, enum: [income, expense] }
+        merchant: { type: string, nullable: true }
+        description: { type: string }
+        category: { type: string }
+        amount: { $ref: '#/components/schemas/Money' }
+        status: { type: string, enum: [processing, pending, succeeded, failed] }
+        occurredAt: { type: string, format: date-time }
+        reference: { type: string }
+    Beneficiary:
+      type: object
+      required: [id, displayName, bankName, maskedAccountNumber, status]
+      properties:
+        id: { type: string, format: uuid }
+        displayName: { type: string }
+        bankName: { type: string }
+        maskedAccountNumber: { type: string }
+        status: { type: string, enum: [active, blocked] }
+    FinancialOperation:
+      type: object
+      required: [id, operationType, status, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        operationType: { type: string, enum: [transfer, payment, topup, virtual_card_creation] }
+        status: { type: string, enum: [processing, pending, succeeded, failed] }
+        amount: { $ref: '#/components/schemas/Money' }
+        resourceId: { type: string, format: uuid, nullable: true }
+        providerReference: { type: string, nullable: true }
+        failureCode: { type: string, nullable: true }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    Debt:
+      type: object
+      required: [providerId, providerName, accountReference, amount, status]
+      properties:
+        providerId: { type: string }
+        providerName: { type: string }
+        accountReference: { type: string }
+        debtReference: { type: string, nullable: true }
+        amount: { $ref: '#/components/schemas/Money' }
+        dueDate: { type: string, format: date, nullable: true }
+        status: { type: string, enum: [payable, not_found, unavailable] }
+    Card:
+      type: object
+      required: [id, type, productName, maskedPan, status, isVirtual, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        type: { type: string, enum: [debit, credit, virtual] }
+        productName: { type: string }
+        maskedPan: { type: string }
+        status: { type: string, enum: [active, frozen, pending, blocked] }
+        isVirtual: { type: boolean }
+        createdAt: { type: string, format: date-time }
+        frozenAt: { type: string, format: date-time, nullable: true }
+    CardLimits:
+      type: object
+      required: [cardId, dailyPurchaseLimit, dailyWithdrawalLimit, updatedAt]
+      properties:
+        cardId: { type: string, format: uuid }
+        dailyPurchaseLimit: { $ref: '#/components/schemas/Money' }
+        dailyWithdrawalLimit: { $ref: '#/components/schemas/Money' }
+        updatedAt: { type: string, format: date-time }
+    WalletProvisioning:
+      type: object
+      required: [id, cardId, wallet, status, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        cardId: { type: string, format: uuid }
+        wallet: { type: string, enum: [apple_wallet] }
+        status: { type: string, enum: [processing, pending, succeeded, failed] }
+        provisioningUrl: { type: string, format: uri, nullable: true }
+        createdAt: { type: string, format: date-time }
+    InsightCategory:
+      type: object
+      required: [category, amount, percentage]
+      properties:
+        category: { type: string }
+        amount: { $ref: '#/components/schemas/Money' }
+        percentage: { type: string, pattern: '^\d+(\.\d{1,2})?$' }
+    Insights:
+      type: object
+      required: [period, totalIncome, totalExpense, categories]
+      properties:
+        period: { type: string, enum: [week, month, year] }
+        totalIncome: { $ref: '#/components/schemas/Money' }
+        totalExpense: { $ref: '#/components/schemas/Money' }
+        comparisonPercentage: { type: string, nullable: true }
+        categories: { type: array, items: { $ref: '#/components/schemas/InsightCategory' } }
+        trend:
+          type: array
+          description: Spending of the last 6 periods (oldest first, ends with the current one). Internal transfers between own products are excluded.
+          items: { $ref: '#/components/schemas/InsightTrendPoint' }
+    InsightTrendPoint:
+      type: object
+      required: [start, totalExpense]
+      properties:
+        start: { type: string, format: date }
+        totalExpense: { $ref: '#/components/schemas/Money' }
+    ExchangeRate:
+      type: object
+      required: [base, quote, rate, asOf, source, stale]
+      properties:
+        base: { type: string, pattern: '^[A-Z]{3}$' }
+        quote: { type: string, pattern: '^[A-Z]{3}$' }
+        rate: { type: string, pattern: '^\d+(\.\d+)?$' }
+        asOf: { type: string, format: date-time }
+        source: { type: string }
+        stale: { type: boolean }
+    Notification:
+      type: object
+      required: [id, type, title, body, read, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        type: { type: string, enum: [security, financial, informational] }
+        title: { type: string }
+        body: { type: string }
+        resourceType: { type: string, nullable: true }
+        resourceId: { type: string, format: uuid, nullable: true }
+        read: { type: boolean }
+        createdAt: { type: string, format: date-time }
+    Device:
+      type: object
+      required: [id, platform, deviceLabel, lastSeenAt, active]
+      properties:
+        id: { type: string, format: uuid }
+        platform: { type: string, enum: [ios, android] }
+        deviceLabel: { type: string }
+        lastSeenAt: { type: string, format: date-time }
+        active: { type: boolean }
+
+    LoginData: { allOf: [{ $ref: '#/components/schemas/SessionData' }] }
+    LogoutData:
+      type: object
+      required: [revoked]
+      properties: { revoked: { type: boolean } }
+    SessionEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: '#/components/schemas/SessionData' }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    LogoutEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: '#/components/schemas/LogoutData' }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    ProfileEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: '#/components/schemas/UserProfile' }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    PreferencesEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: '#/components/schemas/Preferences' }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    DashboardEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: '#/components/schemas/DashboardConfig' }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    AccountsEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { type: array, items: { $ref: '#/components/schemas/Account' } }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    AccountEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: '#/components/schemas/Account' }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    TransactionsEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { type: array, items: { $ref: '#/components/schemas/Transaction' } }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    TransactionEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: '#/components/schemas/Transaction' }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    BeneficiariesEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { type: array, items: { $ref: '#/components/schemas/Beneficiary' } }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    OperationEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: '#/components/schemas/FinancialOperation' }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    DebtEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: '#/components/schemas/Debt' }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    CardsEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { type: array, items: { $ref: '#/components/schemas/Card' } }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    CardEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: '#/components/schemas/Card' }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    CardLimitsEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: '#/components/schemas/CardLimits' }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    WalletProvisioningEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: '#/components/schemas/WalletProvisioning' }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    InsightsEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: '#/components/schemas/Insights' }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    ExchangeRateEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: '#/components/schemas/ExchangeRate' }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    NotificationsEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { type: array, items: { $ref: '#/components/schemas/Notification' } }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    NotificationEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: '#/components/schemas/Notification' }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    ReadAllNotificationsEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: object
+          required: [updatedCount]
+          properties: { updatedCount: { type: integer, minimum: 0 } }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    DevicesEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { type: array, items: { $ref: '#/components/schemas/Device' } }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    DeviceEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data: { $ref: '#/components/schemas/Device' }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+    RevokeDeviceEnvelope:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: object
+          required: [revoked]
+          properties: { revoked: { type: boolean } }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
+
+    CreateTransferRequest:
+      type: object
+      required: [sourceAccountId, beneficiaryId, amount]
+      properties:
+        sourceAccountId: { type: string, format: uuid }
+        beneficiaryId: { type: string, format: uuid }
+        amount: { $ref: '#/components/schemas/Money' }
+        note: { type: string, maxLength: 160 }
+    CreatePaymentRequest:
+      type: object
+      required: [providerId, accountReference, sourceAccountId, amount, debtReference]
+      properties:
+        providerId: { type: string, maxLength: 50 }
+        accountReference: { type: string, maxLength: 100 }
+        debtReference: { type: string, maxLength: 100 }
+        sourceAccountId: { type: string, format: uuid }
+        amount: { $ref: '#/components/schemas/Money' }
+    CreateTopupRequest:
+      type: object
+      required: [operatorId, lineNumber, sourceAccountId, amount]
+      properties:
+        operatorId: { type: string, maxLength: 50 }
+        lineNumber: { type: string, maxLength: 30 }
+        sourceAccountId: { type: string, format: uuid }
+        amount: { $ref: '#/components/schemas/Money' }
+    CreateVirtualCardRequest:
+      type: object
+      properties: { fundingAccountId: { type: string, format: uuid, nullable: true } }
+    UpdateCardLimitsRequest:
+      type: object
+      minProperties: 1
+      properties:
+        dailyPurchaseLimit: { $ref: '#/components/schemas/Money' }
+        dailyWithdrawalLimit: { $ref: '#/components/schemas/Money' }
+    WalletProvisioningRequest:
+      type: object
+      required: [wallet]
+      properties: { wallet: { type: string, enum: [apple_wallet] } }
+    RegisterDeviceRequest:
+      type: object
+      required: [platform, pushToken]
+      properties:
+        platform: { type: string, enum: [ios, android] }
+        pushToken: { type: string, minLength: 1, maxLength: 4096 }
+        deviceLabel: { type: string, maxLength: 100 }
