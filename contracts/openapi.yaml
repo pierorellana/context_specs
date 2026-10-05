@@ -644,19 +644,16 @@ components:
         currency: { type: string, pattern: '^[A-Z]{3}$' }
     ErrorResponse:
       type: object
-      required: [error, traceId]
+      required: [data, message, statusCode, code, details, meta]
       properties:
-        error: { $ref: '#/components/schemas/ApiError' }
-        traceId: { type: string }
-    ApiError:
-      type: object
-      required: [code, message, details]
-      properties:
+        data: { type: object, nullable: true }
+        message: { type: string }
+        statusCode: { type: integer, minimum: 400, maximum: 599 }
         code:
           type: string
           enum: [AUTH_INVALID_CREDENTIALS, SESSION_EXPIRED, REFRESH_REVOKED, ACCOUNT_NOT_FOUND, TRANSACTION_NOT_FOUND, BENEFICIARY_NOT_FOUND, OPERATION_NOT_FOUND, OPERATION_PENDING, OPERATION_REJECTED, INSUFFICIENT_FUNDS, IDEMPOTENCY_CONFLICT, FX_UNAVAILABLE, DEBT_NOT_FOUND, PROVIDER_UNAVAILABLE, CARD_NOT_ELIGIBLE, CARD_ALREADY_FROZEN, CARD_ALREADY_ACTIVE, RATE_LIMITED, VALIDATION_ERROR, NOT_FOUND, SERVICE_UNAVAILABLE]
-        message: { type: string }
         details: { type: object, additionalProperties: true }
+        meta: { $ref: '#/components/schemas/ApiMeta' }
     LoginRequest:
       type: object
       required: [username, password]
@@ -867,153 +864,201 @@ components:
       properties: { revoked: { type: boolean } }
     SessionEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { $ref: '#/components/schemas/SessionData' }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     LogoutEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { $ref: '#/components/schemas/LogoutData' }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     ProfileEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { $ref: '#/components/schemas/UserProfile' }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     PreferencesEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { $ref: '#/components/schemas/Preferences' }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     DashboardEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { $ref: '#/components/schemas/DashboardConfig' }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     AccountsEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { type: array, items: { $ref: '#/components/schemas/Account' } }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     AccountEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { $ref: '#/components/schemas/Account' }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     TransactionsEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { type: array, items: { $ref: '#/components/schemas/Transaction' } }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     TransactionEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { $ref: '#/components/schemas/Transaction' }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     BeneficiariesEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { type: array, items: { $ref: '#/components/schemas/Beneficiary' } }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     OperationEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { $ref: '#/components/schemas/FinancialOperation' }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     DebtEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { $ref: '#/components/schemas/Debt' }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     CardsEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { type: array, items: { $ref: '#/components/schemas/Card' } }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     CardEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { $ref: '#/components/schemas/Card' }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     CardLimitsEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { $ref: '#/components/schemas/CardLimits' }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     WalletProvisioningEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { $ref: '#/components/schemas/WalletProvisioning' }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     InsightsEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { $ref: '#/components/schemas/Insights' }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     ExchangeRateEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { $ref: '#/components/schemas/ExchangeRate' }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     NotificationsEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { type: array, items: { $ref: '#/components/schemas/Notification' } }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     NotificationEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { $ref: '#/components/schemas/Notification' }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     ReadAllNotificationsEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data:
           type: object
           required: [updatedCount]
           properties: { updatedCount: { type: integer, minimum: 0 } }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     DevicesEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { type: array, items: { $ref: '#/components/schemas/Device' } }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     DeviceEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data: { $ref: '#/components/schemas/Device' }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
     RevokeDeviceEnvelope:
       type: object
-      required: [data, meta]
+      required: [data, message, statusCode, meta]
       properties:
         data:
           type: object
           required: [revoked]
           properties: { revoked: { type: boolean } }
+        message: { type: string }
+        statusCode: { type: integer }
         meta: { $ref: '#/components/schemas/ApiMeta' }
 
     CreateTransferRequest:

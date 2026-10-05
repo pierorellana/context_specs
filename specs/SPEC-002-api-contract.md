@@ -23,7 +23,9 @@ jerarquía, copy, motion y estados relevantes sin trasladar CSS/HTML literalment
 Base `/v1`. Access token Bearer.
 Lecturas paginadas usan `cursor`.
 Escrituras financieras exigen `Idempotency-Key`.
-Éxito: `{data, meta}`. Error: `{error:{code,message,details}, traceId}`.
+Éxito y error usan un envelope común con `{data, message, statusCode, meta}`.
+Los errores usan `data: null` y agregan `code` y `details` seguros en el nivel superior.
+`meta` contiene `traceId`, `generatedAt` y, en lecturas paginadas, `nextCursor`.
 Las solicitudes propagan `X-Correlation-Id`; el API genera uno cuando no llega.
 El refresh recibe el refresh token en el body y rota el token anterior.
 OpenAPI es la fuente ejecutable de campos, estados, parámetros y códigos para mobile.
@@ -41,7 +43,7 @@ provisión a Apple Wallet.
   en CI queda pendiente de incorporar al workflow.
 - Mobile puede implementar todos los repositorios sin inferir campos.
 - Errores se resuelven por `code`.
-- Todas las respuestas exitosas del contrato tienen `data` y `meta`, incluidos los
+- Todas las respuestas exitosas del contrato tienen `data`, `message`, `statusCode` y `meta`, incluidos los
   cambios de preferencias, lectura de notificaciones y acciones de dispositivos.
 
 ## 6. Estado actual

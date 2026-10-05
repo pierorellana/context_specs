@@ -21,8 +21,8 @@ jerarquía, copy, motion y estados relevantes sin trasladar CSS/HTML literalment
 
 ## 3. Reglas
 Mobile events: login_success/failure, screen_view, operation_started/result, offline_view_shown,
-cache_fallback_used, retry_triggered.
-Backend: request latency, error rate, dependency latency, idempotency conflict.
+cache_fallback_used, retry_triggered, api_response/api_error con método, ruta, status, duración y traceId.
+Backend: request latency, error rate, dependency latency, idempotency conflict y api_request estructurado.
 PII/saldos/tokens se excluyen.
 
 ## 4. Errores y estados
@@ -36,8 +36,8 @@ Si telemetría falla, nunca bloquea una operación bancaria.
 ## 6. Estado actual
 
 La observabilidad estructurada del API está implementada y redacta headers, bodies,
-saldos, tokens y credenciales. La telemetría Firebase/Sentry y dashboards no están
-configurados todavía.
+saldos, tokens y credenciales. La app registra respuestas sanitizadas con `dart:developer`.
+La telemetría Firebase/Sentry y dashboards no están configurados todavía.
 
 ## 7. Fuera de alcance
 Capacidades productivas no requeridas por el MVP y reglas no declaradas en el DEF.

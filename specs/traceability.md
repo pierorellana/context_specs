@@ -18,7 +18,7 @@
 | SPEC-013 | Notificaciones y deep links | RF-13, RF-14, RN-14 | `SPEC-013-notifications.md` | Inbox implementado; FCM pendiente |
 | SPEC-014 | Perfil, seguridad y preferencias | RF-15, RN-03, RN-04 | `SPEC-014-profile-security.md` | Implementado |
 | SPEC-015 | Conectividad degradada y estados | RF-16, RF-20, RN-06, RN-07, RN-08, RN-09 | `SPEC-015-degraded-connectivity.md` | Implementado en debug/demo |
-| SPEC-016 | Observabilidad y experiencia | RF-18, RNF-12 | `SPEC-016-observability.md` | Backend implementado; telemetría externa pendiente |
+| SPEC-016 | Observabilidad y experiencia | RF-18, RNF-12 | `SPEC-016-observability.md` | API y logs móviles sanitizados implementados; telemetría externa pendiente |
 | SPEC-017 | Pruebas y evidencia | RNF-08 | `SPEC-017-testing-e2e.md` | Parcial; E2E/CI pendiente |
 | SPEC-018 | Uso de IA y automatización | RNF-13 | `SPEC-018-ai-usage.md` | Evidencia documentada; revisión final pendiente |
 | SPEC-019 | Release, demo y Developer Tools | RF-17, RNF-11 | `SPEC-019-release-demo.md` | Demo local implementada; release/CI pendiente |
