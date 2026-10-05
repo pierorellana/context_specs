@@ -13,37 +13,42 @@ prototype_role: primary
 # SPEC-017 · Pruebas y evidencia
 
 ## 1. Propósito y alcance
-Define cobertura mínima verificable para la prueba técnica.
 
-## 2. UI / referencia de prototipo
-El look & feel se deriva del prototipo BInova iOS. La implementación Flutter debe conservar
-jerarquía, copy, motion y estados relevantes sin trasladar CSS/HTML literalmente.
+Define cobertura mínima verificable para la prueba técnica y separa lo implementado de la automatización que aún falta para una entrega operativa.
 
-## 3. Reglas
-Unit tests: use cases, mappers, cache policy, providers.
-Widget tests: login, account card, transactions states, degraded states.
-Backend: services/controllers/repositories + DB ephemeral.
-Contract: OpenAPI.
-E2E crítico: Login -> Home -> Cuenta -> Movimientos -> Detalle.
-Smoke financiero: Transfer -> Face ID -> Processing -> Result.
+## 2. Reglas
 
-## 4. Errores y estados
-Una dependencia externa en CI puede usar adapter fake; la demo conserva integración real en ambiente demo.
+- Unit tests: use cases, mappers, cache policy y providers.
+- Widget tests: login, tarjeta de cuenta, estados de transacciones, estados degradados y accesibilidad.
+- Backend: services, controllers, repositories y pruebas de contrato.
+- Contract: OpenAPI.
+- E2E crítico: Login -> Home -> Cuenta -> Movimientos -> Detalle.
+- Smoke financiero: Transfer -> Face ID -> Processing -> Result.
+- Recuperación de conectividad: offline -> stale -> retry -> refresh.
 
-## 5. Criterios de aceptación / Done
-- CI ejecuta toda la suite rápida.
-- E2E tiene instrucciones reproducibles.
-- Evidencia incluye comandos, resultado y fecha.
+## 3. Errores y estados
 
-## 6. Estado actual
+Una dependencia externa en CI puede usar adapter fake; la demo conserva integración real en ambiente demo. Las pruebas deben dejar evidencia de comando, dispositivo o ambiente, fecha y resultado.
 
-Hay 8 tests Flutter aprobados y 8 tests API aprobados; el API también compila. La
-validación visual se ejecutó en el emulador Android y está almacenada en
-`evidence/ui-validation/`. Aún faltan `integration_test/`, contract testing OpenAPI,
-PostgreSQL efímero en CI y automatización de los dos recorridos críticos.
+## 4. Criterios de aceptación / Done
 
-## 7. Fuera de alcance
+- Suite rápida ejecutable localmente.
+- E2E crítico con instrucciones reproducibles.
+- Evidencia de accesibilidad y objetivos táctiles.
+- Contrato y migraciones verificables en CI cuando exista workflow.
+
+## 5. Estado actual
+
+La suite Flutter completa pasa con 16 pruebas. La prueba específica de widgets y accesibilidad pasa con 2 pruebas e incluye semántica, etiquetas y objetivos táctiles Android/iOS.
+
+El integration_test del flujo crítico está implementado y fue aprobado en un iPhone físico: onboarding cuando aplica, login demo, Productos, Cuenta de Ahorros, Movimientos y detalle de transacción. La evidencia está en evidence/e2e-critical-flow-2026-10-05.md.
+
+La suite API y el build de NestJS están aprobados según la evidencia actual. Aún faltan un workflow CI ejecutable, contract testing OpenAPI automatizado, PostgreSQL efímero en CI, el segundo smoke financiero y un E2E separado para recuperación de conectividad.
+
+## 6. Fuera de alcance
+
 Capacidades productivas no requeridas por el MVP y reglas no declaradas en el DEF.
 
-## 8. Decisiones pendientes
-Ninguna para v2.0 salvo las registradas en `decisions/open-findings.md`.
+## 7. Decisiones pendientes
+
+Ninguna para v2.0 salvo las registradas en decisions/open-findings.md.

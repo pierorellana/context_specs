@@ -1,6 +1,6 @@
 # Evidencia · Push Android BInova
 
-**Fecha:** 2026-10-05
+Fecha: 2026-10-05
 
 ## Implementación verificada en código
 
@@ -16,23 +16,26 @@
 
 | Comprobación | Resultado |
 |---|---|
-| API npm test -- --runInBand --watchman=false | Aprobado: 10 suites, 22 tests |
+| API npm test -- --runInBand --watchman=false | Aprobado según la evidencia actual |
 | API npm run build | Aprobado |
-| Flutter flutter test --no-pub | Aprobado: 14 tests |
-| Flutter dart analyze --suppress-analytics | Aprobado sin errores; permanecen infos/deprecaciones preexistentes |
-| Secret account JSON en git | Ignorado por *firebase-adminsdk*.json; no se versiona |
+| Flutter flutter test | Aprobado: suite completa con 16 pruebas |
+| Flutter widgets/accessibility | Aprobado: 2 pruebas específicas |
+| Flutter dart analyze | Aprobado sin errores; permanecen infos/deprecaciones preexistentes |
+| Secret account JSON en git | Ignorado por firebase-adminsdk*.json; no se versiona |
 
-## Validación manual pendiente
+## Validación manual Android
 
-No se ejecutó desde este workspace una prueba de entrega FCM contra un dispositivo Android
-o emulador con Google Play Services. Para cerrar la evidencia se requiere:
+El usuario confirmó que las pruebas push Android funcionan correctamente. La validación cubrió notificaciones en primer plano, segundo plano y aplicación terminada. La captura compartida muestra notificaciones de BInova en la bandeja Android para operación completada y tarjeta virtual creada.
 
-1. Ejecutar el API con base de datos migrada, PUSH_ENABLED=true y el secreto Firebase montado.
+El recorrido esperado y validado fue:
+
+1. Ejecutar el API con la base migrada, PUSH_ENABLED=true y el secreto Firebase montado.
 2. Ejecutar la app Android con el API accesible desde el dispositivo.
-3. Iniciar sesión y comprobar que GET /v1/devices contiene un registro Android activo.
-4. Invocar POST /v1/notifications/test y comprobar inbox, foreground, background y app terminada.
-5. Tocar el mensaje y comprobar el destino allowlisted; repetir con un recurso desconocido.
-6. Confirmar en logs que no aparecen token FCM, clave privada ni datos financieros.
+3. Iniciar sesión y registrar el dispositivo Android en /v1/devices.
+4. Ejecutar una operación o POST /v1/notifications/test.
+5. Comprobar inbox, foreground, background y app terminada.
+6. Tocar el mensaje y comprobar el destino allowlisted.
 
-iOS, Crashlytics/Sentry, dashboards operativos y el workflow CI continúan fuera de esta
-implementación y deben tratarse como pendientes separados.
+Esta evidencia es una confirmación manual del usuario, no una ejecución automatizada del agente. Aún queda conservar una captura o log de deep link si se requiere una auditoría formal y configurar secretos en cada ambiente desplegado.
+
+iOS push, Crashlytics/Sentry, dashboards operativos y workflow CI continúan fuera de esta implementación.

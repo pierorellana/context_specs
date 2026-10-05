@@ -1,5 +1,9 @@
 # Evidencia de validación local · 2026-10-04
 
+Este documento conserva la fotografía histórica de la validación del 2026-10-04. Las
+validaciones posteriores de push Android, E2E y accesibilidad están registradas en los
+documentos de evidencia fechados 2026-10-05.
+
 ## Backend con PostgreSQL
 
 Comandos ejecutados desde `binova_api`:
@@ -59,7 +63,7 @@ Resultados:
 - Context: commit `5712895` publicado en `context_specs`.
 - Los tres `main` quedaron sin cambios locales pendientes al cierre de esta evidencia.
 
-## Pendiente externo
+## Pendiente externo en la fecha de esta evidencia
 
 La validación de push real y Firebase/FCM queda pendiente de las credenciales
 del ambiente; los endpoints de dispositivos y notificaciones ya están
