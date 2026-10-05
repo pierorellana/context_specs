@@ -23,7 +23,7 @@
 | `DATABASE_URL=postgresql://postgres:postgres@localhost:5432/binova npx prisma validate` | PASS; schema válido |
 | `flutter pub get` en `binova_app` | PASS; dependencias descargadas |
 | `flutter test --no-pub` en `binova_app` | PASS: 9 tests |
-| `dart analyze` directo con Dart 3.11 | Sin errores; 30 infos preexistentes/deprecaciones y dos `empty_catches` derivados de eliminar comentarios |
+| `dart analyze` directo con Dart 3.11 | Sin errores; 28 infos preexistentes deprecaciones |
 | `ruby -e "require 'yaml'; YAML.load_file('contracts/openapi.yaml')"` | PASS; YAML válido |
 | `rg` de comentarios bajo `binova_app/lib` | PASS; sin resultados |
 | `git diff --check` de los commits de código | PASS |
@@ -41,4 +41,5 @@ No se pudo completar el smoke HTTP contra `/v1/health`: el API compiló y regist
 - Health envelope: `d258155`
 - Flutter parsing y logs: `9afcfbb`
 - Limpieza de comentarios: `2c627a5`
+- Manejo explícito de errores de notificaciones: `178f0a4`
 - OpenAPI/SPEC/traceability: `79682f1`
