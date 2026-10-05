@@ -385,7 +385,7 @@ git commit -m "feat: log sanitized api responses in mobile"
 - Modify: `context_specs/contracts/openapi.yaml`
 - Modify: `context_specs/specs/SPEC-002-api-contract.md`
 - Modify: `context_specs/specs/SPEC-016-observability.md`
-- Modify: `context_specs/traceability.md` if the envelope/observability status changes require a row update
+- Modify: `context_specs/specs/traceability.md` if the envelope/observability status changes require a row update
 
 - [ ] **Step 1: Replace the OpenAPI error schema**
 
@@ -412,7 +412,7 @@ Expected: no whitespace errors.
 - [ ] **Step 5: Commit the contract documentation**
 
 ```bash
-git add contracts/openapi.yaml specs/SPEC-002-api-contract.md specs/SPEC-016-observability.md traceability.md
+git add contracts/openapi.yaml specs/SPEC-002-api-contract.md specs/SPEC-016-observability.md specs/traceability.md
 git commit -m "docs: align api envelope and observability contract"
 ```
 
